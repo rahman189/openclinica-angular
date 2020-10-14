@@ -23,10 +23,11 @@ export class SubjectMatrixComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      let data = [...this.dataSource]
-      data.push(result)
-      this.dataSource = data
-      console.log('The dialog was closed', result, this.dataSource);
+      if (result) {
+        let data = [...this.dataSource]
+        data.push(result)
+        this.dataSource = data
+      }
     });
   }
 }
