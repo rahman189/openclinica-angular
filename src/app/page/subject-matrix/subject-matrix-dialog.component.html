@@ -1,0 +1,62 @@
+<h1 mat-dialog-title>Add New Subject</h1>
+<div mat-dialog-content>
+  <form class="example-form" [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
+    <mat-form-field class="example-full-width">
+      <mat-label>Study Subject ID</mat-label>
+      <input matInput placeholder="Study Subject ID" formControlName="studySubjectId">
+      <mat-error *ngIf="checkErrors('studySubjectId', 'required')">Study Subject ID is required</mat-error>
+    </mat-form-field>
+  
+    <mat-form-field class="example-full-width">
+      <mat-label>Person ID</mat-label>
+      <input matInput placeholder="Person ID" formControlName="personId">
+      <mat-error *ngIf="checkErrors('personId', 'required')">Person ID is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Enrollment Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="enrollmentDate">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="checkErrors('enrollmentDate', 'required')">Enrollment Date is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Sex</mat-label>
+      <mat-select formControlName="sex">
+        <mat-option value="Male">Male</mat-option>
+        <mat-option value="Female">Female</mat-option>
+      </mat-select>
+      <mat-error *ngIf="checkErrors('sex', 'required')">Sex is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Date of Birth</mat-label>
+      <input matInput [matDatepicker]="pickerBirth" formControlName="dateOfBirth">
+      <mat-datepicker-toggle matSuffix [for]="pickerBirth"></mat-datepicker-toggle>
+      <mat-datepicker #pickerBirth></mat-datepicker>
+      <mat-error *ngIf="checkErrors('dateOfBirth', 'required')">Date of Birth is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Study Event</mat-label>
+      <mat-select formControlName="studyEvent">
+        <mat-option value="Study event 1">Study event 1</mat-option>
+        <mat-option value="Study event 2">Study event 2</mat-option>
+      </mat-select>
+      <mat-error *ngIf="checkErrors('studyEvent', 'required')">Study Event is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Start Date</mat-label>
+      <input matInput [matDatepicker]="pickerStart" formControlName="startDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+      <mat-datepicker #pickerStart></mat-datepicker>
+      <mat-error *ngIf="checkErrors('startDate', 'required')">Start Date is required</mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onSubmit()" cdkFocusInitial>Add</button>
+</div>
