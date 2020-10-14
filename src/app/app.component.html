@@ -1,11 +1,15 @@
-<app-topbar (myEvent)="drawer.toggle()"></app-topbar>
-<mat-drawer-container class="example-container">
-  <mat-drawer #drawer mode="side">
-    <app-menu></app-menu>
-  </mat-drawer>
-  <mat-drawer-content>
-    <main>
-      <router-outlet></router-outlet>
-    </main>
-  </mat-drawer-content>
-</mat-drawer-container>
+<div class="wrapper">
+  <app-topbar></app-topbar>
+  <app-sidebar></app-sidebar>
+  <div class="content-wrapper">
+    <router-outlet></router-outlet>
+  </div>
+  <aside class="control-sidebar control-sidebar-dark">
+  </aside>
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2014-2020 <a href="http://www.openclinica.com/">OpenClinica</a>.</strong>
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.0
+    </div>
+  </footer>
+</div>
