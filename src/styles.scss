@@ -2,3 +2,28 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  visibility: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(182, 182, 182); 
+  border-radius: 10px;
+}
+label {
+  font-weight: 400 !important;
+}
+button:focus {
+  outline: none !important;;
+}
+
+.error-snackbar {
+  background: #ff3d3d;
+  color: white;
+}

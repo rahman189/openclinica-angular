@@ -1,12 +1,22 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './page/home/home.component';
-import { NotFoundComponent } from './page/not-found/not-found.component';
-import { SubjectMatrixComponent } from './page/subject-matrix/subject-matrix.component';
+import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
+import { HomeComponent } from './pages/home/home.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { SubjectMatrixComponent } from './pages/subject-matrix/subject-matrix.component';
+import { LoginComponent } from './pages/login/login.component'
+import { AuthGuard } from './helpers/auth.guard'
 const routes: Routes = [
-  {path: '', component: HomeComponent},
+  {
+    path: '',
+    component: AppLayoutComponent,
+    children: [
+      {path: '', component: HomeComponent, canActivate: [AuthGuard]},
+      {path: 'subject-matrix', component: SubjectMatrixComponent, canActivate: [AuthGuard]},
+    ]
+  },
+  {path: 'login', component: LoginComponent},
   {path: 'not-found', component: NotFoundComponent},
-  {path: 'subject-matrix', component: SubjectMatrixComponent},
   {path: '**', redirectTo: 'not-found'}
 ];
 

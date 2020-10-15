@@ -1,0 +1,29 @@
+<div class="login-wrapper" fxLayout="column" fxLayoutAlign="center center">
+  <div>
+    <img mat-card-image src="assets/images/OC_login_logo.png" class="image-logo" alt="App logo">
+  </div>
+  <mat-card class="mat-elevation-z8">
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    <mat-card-header fxLayoutAlign="center center">
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content fxLayout="column">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="example-full-width">
+          <mat-label>Username</mat-label>
+          <input matInput placeholder="Username" formControlName="username">
+          <mat-error *ngIf="checkErrors('username', 'required')">Username is required</mat-error>
+        </mat-form-field>
+      
+        <mat-form-field class="example-full-width">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password">
+          <mat-error *ngIf="checkErrors('password', 'required')">Password is required</mat-error>
+        </mat-form-field>
+        <div style="float: right;">
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading">Login</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

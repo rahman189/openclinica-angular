@@ -1,16 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
+import { fakeBackendProvider } from './helpers/fake-backend';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AppSidebarComponent } from './app.sidebar.component';
-import { AppTopbarComponent } from './app.topbar.component';
-import { HomeComponent } from './page/home/home.component';
-import { NotFoundComponent } from './page/not-found/not-found.component';
-import { SubjectMatrixComponent } from './page/subject-matrix/subject-matrix.component';
-import { DialogOverviewExampleDialog } from './page/subject-matrix/subject-matrix.component';
+import { HomeComponent } from './pages/home/home.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { SubjectMatrixComponent } from './pages/subject-matrix/subject-matrix.component';
+import { DialogOverviewExampleDialog } from './pages/subject-matrix/subject-matrix.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+import { JwtInterceptor, ErrorInterceptor, appInitializer } from './helpers';
+import { AuthenticationService } from './services/authentication.service';
 
 import {MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
@@ -23,16 +28,28 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { LoginComponent } from './pages/login/login.component';
+import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
+import { AppTopBarComponent } from './layout/app-top-bar/app-top-bar.component';
+import { AppSideBarComponent } from './layout/app-side-bar/app-side-bar.component';
+import { AppFooterComponent } from './layout/app-footer/app-footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AppTopbarComponent,
-    AppSidebarComponent,
     HomeComponent,
     NotFoundComponent,
     SubjectMatrixComponent,
-    DialogOverviewExampleDialog
+    DialogOverviewExampleDialog,
+    ConfirmDialogComponent,
+    LoginComponent,
+    AppLayoutComponent,
+    AppTopBarComponent,
+    AppSideBarComponent,
+    AppFooterComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +57,8 @@ import {MatSelectModule} from '@angular/material/select';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
+    FlexLayoutModule,
     MatTableModule,
     MatButtonModule,
     MatIconModule,
@@ -51,9 +70,18 @@ import {MatSelectModule} from '@angular/material/select';
     MatDatepickerModule,
     MatNativeDateModule,
     MatRippleModule,
-    MatSelectModule
+    MatSelectModule,
+    MatProgressBarModule,
+    MatSnackBarModule
   ],
-  providers: [],
+  providers: [
+    { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthenticationService] },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
+    // provider used to create fake backend
+    fakeBackendProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

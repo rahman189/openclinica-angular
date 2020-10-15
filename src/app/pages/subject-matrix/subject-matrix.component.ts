@@ -1,6 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { DialogData, ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
+import { title } from 'process';
 
 @Component({
   selector: 'app-subject-matrix',
@@ -30,6 +32,31 @@ export class SubjectMatrixComponent {
       }
     });
   }
+
+  confirmDelete(index: number): void {
+    const data:DialogData = {
+      message: 'Are you sure to delete this data?',
+      title: 'Confirmation'
+    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '500px',
+      data: data,
+      role: 'alertdialog'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(index,this.dataSource[index], result)
+        let data = [...this.dataSource]
+        data.splice(index, 1)
+        this.dataSource = data
+      }
+    });
+  }
+  
+  applyFilter(event) {
+    console.log(event)
+  }
 }
 
 @Component({
@@ -56,12 +83,25 @@ export class DialogOverviewExampleDialog {
     this.dialogRef.close();
   }
 
-  public checkErrors(controlName: string, validator: string) {
+  validateAllFormFields(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      }
+    });
+  }
+
+
+  checkErrors(controlName: string, validator: string) {
     return this.subjectForm.controls[controlName].hasError(validator);
   }
 
   onSubmit(): void {
-    if (!this.subjectForm.invalid) this.dialogRef.close(this.subjectForm.value);
+    if (!this.subjectForm.invalid) this.dialogRef.close(this.subjectForm.value)
+    else this.validateAllFormFields(this.subjectForm)
   }
 
 }
