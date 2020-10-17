@@ -1,9 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-
-import { fakeBackendProvider } from './helpers/fake-backend';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,8 +12,7 @@ import { DialogOverviewExampleDialog } from './pages/subject-matrix/subject-matr
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { JwtInterceptor, ErrorInterceptor, appInitializer } from './helpers';
-import { AuthenticationService } from './services/authentication.service';
+import { JwtInterceptor, ErrorInterceptor } from './helpers';
 
 import {MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
@@ -36,6 +33,10 @@ import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
 import { AppTopBarComponent } from './layout/app-top-bar/app-top-bar.component';
 import { AppSideBarComponent } from './layout/app-side-bar/app-side-bar.component';
 import { AppFooterComponent } from './layout/app-footer/app-footer.component';
+import { TableSubjectSiteComponent } from './components/table-subject-site/table-subject-site.component';
+import { TableSubjectStudyComponent } from './components/table-subject-study/table-subject-study.component';
+import { StudyProgressComponent } from './components/study-progress/study-progress.component';
+import { SubjectCountComponent } from './components/subject-count/subject-count.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,11 @@ import { AppFooterComponent } from './layout/app-footer/app-footer.component';
     AppLayoutComponent,
     AppTopBarComponent,
     AppSideBarComponent,
-    AppFooterComponent
+    AppFooterComponent,
+    TableSubjectSiteComponent,
+    TableSubjectStudyComponent,
+    StudyProgressComponent,
+    SubjectCountComponent
   ],
   imports: [
     BrowserModule,
@@ -75,12 +80,8 @@ import { AppFooterComponent } from './layout/app-footer/app-footer.component';
     MatSnackBarModule
   ],
   providers: [
-    { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthenticationService] },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
-    // provider used to create fake backend
-    fakeBackendProvider
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

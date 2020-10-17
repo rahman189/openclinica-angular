@@ -1,0 +1,28 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Subject Status Count</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="eventStatus">
+          <th mat-header-cell *matHeaderCellDef style="width: 200px;"> Study Subject Status </th>
+          <td mat-cell *matCellDef="let element"> {{element.eventStatus}} </td>
+        </ng-container>
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef style="width: 150px;"> # Of Study Subjects </th>
+          <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+        </ng-container>
+        <ng-container matColumnDef="percentage">
+          <th mat-header-cell *matHeaderCellDef> Percentage </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-progress-bar mode="determinate" [value]="element.percentage"></mat-progress-bar>
+            <div class="progress-bar-text">
+                {{ element.percentage }}%
+            </div>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,38 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Subject Enrollment By Site</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef style="width: 75px;"> No. </th>
+          <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
+        </ng-container>
+        <ng-container matColumnDef="studySubjectId">
+          <th mat-header-cell *matHeaderCellDef style="width: 200px;"> Study </th>
+          <td mat-cell *matCellDef="let element"> {{element.studySubjectId}} </td>
+        </ng-container>
+        <ng-container matColumnDef="subjectStatus">
+          <th mat-header-cell *matHeaderCellDef style="width: 150px;"> Enrolled </th>
+          <td mat-cell *matCellDef="let element"> {{element.subjectStatus}} </td>
+        </ng-container>
+        <ng-container matColumnDef="siteId">
+          <th mat-header-cell *matHeaderCellDef style="width: 150px;"> Expected Enrollment </th>
+          <td mat-cell *matCellDef="let element"> {{element.siteId}} </td>
+        </ng-container>
+        <ng-container matColumnDef="oid">
+          <th mat-header-cell *matHeaderCellDef> Percentage </th>
+          <td mat-cell *matCellDef="let element"> {{element.oid}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="5" style="text-align: center;">No Data</td>
+        </tr>
+    </table>
+    <mat-paginator [length]="length"
+                  [pageSize]="pageSize"
+                  [pageSizeOptions]="pageSizeOptions">
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>

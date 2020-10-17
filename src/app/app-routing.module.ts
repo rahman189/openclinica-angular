@@ -11,9 +11,10 @@ const routes: Routes = [
     path: '',
     component: AppLayoutComponent,
     children: [
-      {path: '', component: HomeComponent, canActivate: [AuthGuard]},
-      {path: 'subject-matrix', component: SubjectMatrixComponent, canActivate: [AuthGuard]},
-    ]
+      {path: '', component: HomeComponent},
+      {path: 'subject-matrix', component: SubjectMatrixComponent},
+    ],
+    canActivate: [AuthGuard]
   },
   {path: 'login', component: LoginComponent},
   {path: 'not-found', component: NotFoundComponent},
