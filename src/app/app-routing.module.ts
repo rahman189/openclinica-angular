@@ -11,8 +11,8 @@ const routes: Routes = [
     path: '',
     component: AppLayoutComponent,
     children: [
-      {path: '', component: HomeComponent},
-      {path: 'subject-matrix', component: SubjectMatrixComponent},
+      {path: '', component: HomeComponent, canActivate: [AuthGuard]},
+      {path: 'subject-matrix', component: SubjectMatrixComponent, canActivate: [AuthGuard]},
     ],
     canActivate: [AuthGuard]
   },
