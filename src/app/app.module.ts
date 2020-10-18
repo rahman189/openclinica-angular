@@ -37,6 +37,8 @@ import { TableSubjectSiteComponent } from './components/table-subject-site/table
 import { TableSubjectStudyComponent } from './components/table-subject-study/table-subject-study.component';
 import { StudyProgressComponent } from './components/study-progress/study-progress.component';
 import { SubjectCountComponent } from './components/subject-count/subject-count.component';
+import { StudyAuditLogComponent } from './pages/study-audit-log/study-audit-log.component';
+import { NotesDiscrepanciesComponent } from './pages/notes-discrepancies/notes-discrepancies.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { SubjectCountComponent } from './components/subject-count/subject-count.
     TableSubjectSiteComponent,
     TableSubjectStudyComponent,
     StudyProgressComponent,
-    SubjectCountComponent
+    SubjectCountComponent,
+    StudyAuditLogComponent,
+    NotesDiscrepanciesComponent
   ],
   imports: [
     BrowserModule,

@@ -4,8 +4,10 @@ import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { SubjectMatrixComponent } from './pages/subject-matrix/subject-matrix.component';
-import { LoginComponent } from './pages/login/login.component'
-import { AuthGuard } from './helpers/auth.guard'
+import { LoginComponent } from './pages/login/login.component';
+import { AuthGuard } from './helpers/auth.guard';
+import { StudyAuditLogComponent } from './pages/study-audit-log/study-audit-log.component';
+import { NotesDiscrepanciesComponent } from './pages/notes-discrepancies/notes-discrepancies.component';
 const routes: Routes = [
   {
     path: '',
@@ -13,6 +15,8 @@ const routes: Routes = [
     children: [
       {path: '', component: HomeComponent, canActivate: [AuthGuard]},
       {path: 'subject-matrix', component: SubjectMatrixComponent, canActivate: [AuthGuard]},
+      {path: 'study-audit-log', component: StudyAuditLogComponent, canActivate: [AuthGuard]},
+      {path: 'notes-discrepancies', component: NotesDiscrepanciesComponent, canActivate: [AuthGuard]}
     ],
     canActivate: [AuthGuard]
   },
