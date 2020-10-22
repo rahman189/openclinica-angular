@@ -1,22 +1,30 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DialogData, ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
+import { ApiService } from '../../services/api.service'
 
 @Component({
   selector: 'app-subject-matrix',
   templateUrl: './subject-matrix.component.html',
   styleUrls: ['./subject-matrix.component.scss']
 })
-export class SubjectMatrixComponent {
+export class SubjectMatrixComponent implements OnInit {
   
-  displayedColumns: string[] = ['index', 'studySubjectId', 'subjectStatus', 'siteId', 'oid', 'sex', 'secondaryId', 'actions'];
+  displayedColumns: string[] = ['index', 'label', 'status', 'siteId', 'oid', 'gender', 'secondaryId', 'actions'];
   dataSource: any[] = [];
   length = 100;
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 25, 100];
+  search: string = ''
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private apiService: ApiService) {}
+
+  ngOnInit(): void {
+    this.apiService.get('/subject/getAll/?search=').subscribe((data) => {
+      this.dataSource = data
+    })
+  }
 
   addNewSubject(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
@@ -53,8 +61,10 @@ export class SubjectMatrixComponent {
     });
   }
   
-  applyFilter(event) {
-    console.log(event)
+  applyFilter() {
+    this.apiService.get(`/subject/getAll/?search=${this.search}`).subscribe((data) => {
+      this.dataSource = data
+    })
   }
 }
 
