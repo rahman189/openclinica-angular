@@ -3,8 +3,8 @@
   <form class="example-form" [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
     <mat-form-field class="example-full-width">
       <mat-label>Study Subject ID</mat-label>
-      <input matInput placeholder="Study Subject ID" formControlName="studySubjectId">
-      <mat-error *ngIf="checkErrors('studySubjectId', 'required')">Study Subject ID is required</mat-error>
+      <input matInput placeholder="Study Subject ID" formControlName="label">
+      <mat-error *ngIf="checkErrors('label', 'required')">Study Subject ID is required</mat-error>
     </mat-form-field>
   
     <mat-form-field class="example-full-width">
@@ -24,8 +24,8 @@
     <mat-form-field class="example-full-width">
       <mat-label>Sex</mat-label>
       <mat-select formControlName="sex">
-        <mat-option value="Male">Male</mat-option>
-        <mat-option value="Female">Female</mat-option>
+        <mat-option value="m">Male</mat-option>
+        <mat-option value="f">Female</mat-option>
       </mat-select>
       <mat-error *ngIf="checkErrors('sex', 'required')">Sex is required</mat-error>
     </mat-form-field>

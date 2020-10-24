@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DialogData, ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { ApiService } from '../../services/api.service'
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-subject-matrix',
@@ -17,11 +19,10 @@ export class SubjectMatrixComponent implements OnInit {
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 25, 100];
   search: string = ''
-
-  constructor(public dialog: MatDialog, private apiService: ApiService) {}
+  constructor(public dialog: MatDialog, private apiService: ApiService, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
-    this.apiService.get('/subject/getAll/?search=').subscribe((data) => {
+    this.apiService.get('/subject/get-all/?search=').subscribe((data) => {
       this.dataSource = data
     })
   }
@@ -33,9 +34,7 @@ export class SubjectMatrixComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        let data = [...this.dataSource]
-        data.push(result)
-        this.dataSource = data
+        this.applyFilter()
       }
     });
   }
@@ -45,6 +44,7 @@ export class SubjectMatrixComponent implements OnInit {
       message: 'Are you sure to delete this data?',
       title: 'Confirmation'
     }
+    const dataStudySubject = this.dataSource[index]
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '500px',
       data: data,
@@ -53,16 +53,25 @@ export class SubjectMatrixComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(index,this.dataSource[index], result)
-        let data = [...this.dataSource]
-        data.splice(index, 1)
-        this.dataSource = data
+        this.apiService.delete(`/subject/${dataStudySubject.subjectId}/${dataStudySubject.studySubjectId}`).subscribe({
+          next: () => {
+            this.applyFilter()
+          },
+          error: error => {
+            this._snackBar.open(error, '', {
+              duration: 3000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
+              panelClass: ['error-snackbar']
+            });
+          }
+        })
       }
     });
   }
   
   applyFilter() {
-    this.apiService.get(`/subject/getAll/?search=${this.search}`).subscribe((data) => {
+    this.apiService.get(`/subject/get-all/?search=${this.search}`).subscribe((data) => {
       this.dataSource = data
     })
   }
@@ -75,7 +84,7 @@ export class SubjectMatrixComponent implements OnInit {
 })
 export class DialogOverviewExampleDialog {
   subjectForm = this.fb.group({
-    studySubjectId: ['', Validators.required],
+    label: ['', Validators.required],
     personId: ['', Validators.required],
     enrollmentDate: [new Date(), Validators.required],
     sex: ['', Validators.required],
@@ -83,9 +92,13 @@ export class DialogOverviewExampleDialog {
     studyEvent: ['', Validators.required],
     startDate: [new Date(), Validators.required],
   });
+
+  pipe = new DatePipe('en-US')
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
     private fb: FormBuilder,
+    private apiService: ApiService,
+    private _snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   onNoClick(): void {
@@ -109,7 +122,28 @@ export class DialogOverviewExampleDialog {
   }
 
   onSubmit(): void {
-    if (!this.subjectForm.invalid) this.dialogRef.close(this.subjectForm.value)
+    if (!this.subjectForm.invalid) {
+      const data = {
+        label: this.subjectForm.value.label,
+        enrollmentDate: this.pipe.transform(this.subjectForm.value.enrollmentDate, 'yyyy-MM-dd'),
+        personId: this.subjectForm.value.personId,
+        sex: this.subjectForm.value.sex,
+        dateOfBirth: this.pipe.transform(this.subjectForm.value.dateOfBirth, 'yyyy-MM-dd')
+      }
+      this.apiService.post('/subject/save-study-subject', data).subscribe({
+        next: () => {
+          this.dialogRef.close(this.subjectForm.value)
+        },
+        error: error => {
+          this._snackBar.open(error, '', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['error-snackbar']
+          });
+        }
+      })
+    }
     else this.validateAllFormFields(this.subjectForm)
   }
 

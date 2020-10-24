@@ -13,8 +13,23 @@ export class ApiService {
   get(url: string) {
 		return this.http.get<any>(`${environment.apiUrl}${url}`)
 		.pipe(
-			map(data => {
-        return data
+			map(response => {
+        return response
+      }));
+  }
+  
+  post(url: string, data: object) {
+		return this.http.post<any>(`${environment.apiUrl}${url}`, data)
+		.pipe(
+			map(response => {
+        return response
+      }));
+  }
+  delete(url: string) {
+		return this.http.delete<any>(`${environment.apiUrl}${url}`)
+		.pipe(
+			map(response => {
+        return response
       }));
   }
   
