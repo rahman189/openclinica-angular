@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './subject-matrix.component.html',
   styleUrls: ['./subject-matrix.component.scss']
 })
-export class SubjectMatrixComponent implements OnInit {
+export class SubjectMatrixComponent implements OnInit, AfterViewChecked {
   
   displayedColumns: string[] = ['index', 'label', 'status', 'siteId', 'oid', 'gender', 'secondaryId', 'actions'];
   dataSource: any[] = [];
@@ -19,7 +19,16 @@ export class SubjectMatrixComponent implements OnInit {
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 25, 100];
   search: string = ''
+  @ViewChild('myTable') table;
+  tableHeight: number
+  tableWidth: number
+  isLoading: boolean
   constructor(public dialog: MatDialog, private apiService: ApiService, private _snackBar: MatSnackBar) {}
+
+  ngAfterViewChecked(): void {
+    this.tableHeight = this.table._elementRef.nativeElement.clientHeight + 9
+    this.tableWidth = this.table._elementRef.nativeElement.clientWidth + 5
+  }
 
   ngOnInit(): void {
     this.apiService.get('/subject/get-all/?search=').subscribe((data) => {
@@ -71,8 +80,12 @@ export class SubjectMatrixComponent implements OnInit {
   }
   
   applyFilter() {
+    this.isLoading = true
     this.apiService.get(`/subject/get-all/?search=${this.search}`).subscribe((data) => {
       this.dataSource = data
+      this.tableHeight = this.table._elementRef.nativeElement.clientHeight + 9
+      this.tableWidth = this.table._elementRef.nativeElement.clientWidth + 5
+      this.isLoading = false
     })
   }
 }
@@ -92,8 +105,8 @@ export class DialogOverviewExampleDialog {
     studyEvent: ['', Validators.required],
     startDate: [new Date(), Validators.required],
   });
-
   pipe = new DatePipe('en-US')
+  loading: boolean
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
     private fb: FormBuilder,
@@ -130,8 +143,10 @@ export class DialogOverviewExampleDialog {
         sex: this.subjectForm.value.sex,
         dateOfBirth: this.pipe.transform(this.subjectForm.value.dateOfBirth, 'yyyy-MM-dd')
       }
+      this.loading = true
       this.apiService.post('/subject/save-study-subject', data).subscribe({
         next: () => {
+          this.loading = false
           this.dialogRef.close(this.subjectForm.value)
         },
         error: error => {

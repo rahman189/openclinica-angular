@@ -22,7 +22,10 @@
               <input matInput (keyup.enter)="applyFilter()" [(ngModel)]="search" placeholder="Ex. ium" #input>
             </mat-form-field>
             <div class="mat-elevation-z8">
-              <table mat-table [dataSource]="dataSource">
+              <div class="spinner-container" *ngIf="isLoading" [style]="{height: tableHeight+'px', width: tableWidth+'px'}">
+                <mat-spinner [diameter]="50"></mat-spinner>
+              </div>
+              <table #myTable mat-table [dataSource]="dataSource">
                   <ng-container matColumnDef="index">
                     <th mat-header-cell *matHeaderCellDef style="width: 75px;"> No. </th>
                     <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>

@@ -27,6 +27,8 @@ import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
@@ -81,6 +83,7 @@ import { NotesDiscrepanciesComponent } from './pages/notes-discrepancies/notes-d
     MatRippleModule,
     MatSelectModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     MatSnackBarModule
   ],
   providers: [

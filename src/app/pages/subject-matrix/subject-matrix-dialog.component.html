@@ -1,10 +1,13 @@
-<h1 mat-dialog-title>Add New Subject</h1>
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+<h1 mat-dialog-title>
+  Add New Subject
+</h1>
 <div mat-dialog-content>
   <form class="example-form" [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
     <mat-form-field class="example-full-width">
-      <mat-label>Study Subject ID</mat-label>
-      <input matInput placeholder="Study Subject ID" formControlName="label">
-      <mat-error *ngIf="checkErrors('label', 'required')">Study Subject ID is required</mat-error>
+      <mat-label>Study Subject</mat-label>
+      <input matInput placeholder="Study Subject" formControlName="label">
+      <mat-error *ngIf="checkErrors('label', 'required')">Study Subject is required</mat-error>
     </mat-form-field>
   
     <mat-form-field class="example-full-width">
@@ -58,5 +61,5 @@
 </div>
 <div mat-dialog-actions style="float: right;">
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button (click)="onSubmit()" cdkFocusInitial>Add</button>
+  <button mat-button (click)="onSubmit()" [disabled]="loading">Add</button>
 </div>
