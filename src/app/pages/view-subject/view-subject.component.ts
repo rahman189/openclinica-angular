@@ -1,19 +1,17 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service'
 
 @Component({
   selector: 'app-view-subject',
   templateUrl: './view-subject.component.html',
-  styleUrls: ['./view-subject.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./view-subject.component.scss']
 })
 export class ViewSubjectComponent implements OnInit {
   displayedColumns: string[];
   dataSource: any[];
-  length:number;
-  pageSize: number;
-  pageSizeOptions: number[] ;
+  dataSourceGroup: any[];
+  displayedColumnsGroup: string[];
   subject: any = {
     enrollmentDate: '',
     label: '',
@@ -38,9 +36,6 @@ export class ViewSubjectComponent implements OnInit {
     this.apiService.get(`/subject/details/${this.studySubjectId}`).subscribe((data) => {
       this.subject = data
     })
-    this.pageSizeOptions = [5, 10, 25, 100];
-    this.length = 100;
-    this.pageSize = 10;
     this.displayedColumns = [
       'index',
       'event',
@@ -50,6 +45,13 @@ export class ViewSubjectComponent implements OnInit {
       'actions',
       'crf'];
     this.dataSource = [];
+
+    this.displayedColumnsGroup = [
+      'index',
+      'groupClass',
+      'studyGroup',
+      'notes'];
+    this.dataSourceGroup = [];
   }
 
 }

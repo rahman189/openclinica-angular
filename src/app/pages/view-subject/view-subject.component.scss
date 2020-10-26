@@ -1,17 +1,9 @@
-.table-container {
-  overflow: auto;
-}
-.mat-header-cell {
-  min-width: 100px;
-}
-
-.mat-header-row, .mat-row {
-  min-width: 2100px;
-}
 table {
   width: 100%;
 }
-
 .value {
   font-weight: bold;
+}
+.example-full-width {
+  width: 100%;
 }

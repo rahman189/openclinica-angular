@@ -89,7 +89,11 @@
                   Events
                 </mat-panel-title>
               </mat-expansion-panel-header>
-              <div class="table-container">
+              <mat-form-field class="example-full-width">
+                <mat-label>Filter</mat-label>
+                <input matInput placeholder="Event">
+              </mat-form-field>
+              <div class="mat-elevation-z8">
                 <table mat-table [dataSource]="dataSource">
                     <ng-container matColumnDef="index">
                       <th mat-header-cell *matHeaderCellDef style="width: 75px;"> No. </th>
@@ -112,7 +116,7 @@
                       <td mat-cell *matCellDef="let element"> {{element.status}} </td>
                     </ng-container>
                     <ng-container matColumnDef="actions">
-                      <th mat-header-cell *matHeaderCellDef style="width: 100px"> Actions </th>
+                      <th mat-header-cell *matHeaderCellDef> Actions </th>
                       <td mat-cell *matCellDef="let element; let i = index;"> 
                         <button mat-icon-button color="primary">
                           <mat-icon>visibility</mat-icon>
@@ -126,14 +130,10 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     <tr class="mat-row" *matNoDataRow>
-                      <td class="mat-cell" colspan="21" style="text-align: center;">No Data</td>
+                      <td class="mat-cell" colspan="7" style="text-align: center;">No Data</td>
                     </tr>
                 </table>
               </div>
-              <mat-paginator [length]="length"
-                            [pageSize]="pageSize"
-                            [pageSizeOptions]="pageSizeOptions">
-              </mat-paginator>
             </mat-expansion-panel>
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -141,6 +141,31 @@
                   Group
                 </mat-panel-title>
               </mat-expansion-panel-header>
+              <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSourceGroup">
+                    <ng-container matColumnDef="index">
+                      <th mat-header-cell *matHeaderCellDef style="width: 75px;"> No. </th>
+                      <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="groupClass">
+                      <th mat-header-cell *matHeaderCellDef> Subject Group Class </th>
+                      <td mat-cell *matCellDef="let element"> {{element.groupClass}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="studyGroup">
+                      <th mat-header-cell *matHeaderCellDef> Study Group </th>
+                      <td mat-cell *matCellDef="let element"> {{element.studyGroup}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="notes">
+                      <th mat-header-cell *matHeaderCellDef> Notes </th>
+                      <td mat-cell *matCellDef="let element"> {{element.notes}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsGroup"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsGroup;"></tr>
+                    <tr class="mat-row" *matNoDataRow>
+                      <td class="mat-cell" colspan="4" style="text-align: center;">No Data</td>
+                    </tr>
+                </table>
+              </div>
             </mat-expansion-panel>
             <mat-expansion-panel>
               <mat-expansion-panel-header>
