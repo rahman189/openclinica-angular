@@ -1,0 +1,163 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">View Subject: {{subject.label}}</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Main content -->
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <mat-accordion multi>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Study Subject Record
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="row">
+                <div class="col-2">
+                  Study Subject
+                </div>
+                <div class="col-2">
+                  {{subject.label}}
+                </div>
+                <div class="col-2">
+                  Person ID
+                </div>
+                <div class="col-2">
+                  {{subject.personId}}
+                </div>
+                <div class="col-2">
+                  Secondary ID
+                </div>
+                <div class="col-2">
+                  -
+                </div>
+                <div class="col-2">
+                  Date Of Birth
+                </div>
+                <div class="col-2">
+                  {{subject.dateOfBirth}}
+                </div>
+                <div class="col-2">
+                  OID
+                </div>
+                <div class="col-2">
+                  {{subject.oid}}
+                </div>
+                <div class="col-2">
+                  Sex
+                </div>
+                <div class="col-2">
+                  {{subject.gender === 'm' ? 'Male' : 'Female'}}
+                </div>
+                <div class="col-2">
+                  Status
+                </div>
+                <div class="col-2">
+                  {{subject.status}}
+                </div>
+                <div class="col-2">
+                  Enrollment Date
+                </div>
+                <div class="col-2">
+                  {{subject.enrollmentDate}}
+                </div>
+                <div class="col-2">
+                  Study Name
+                </div>
+                <div class="col-2">
+                  {{subject.siteId}}
+                </div>
+                <div class="col-2">
+                  Site Name
+                </div>
+                <div class="col-2">
+                  -
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel expanded>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Events
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="table-container">
+                <table mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="index">
+                      <th mat-header-cell *matHeaderCellDef style="width: 75px;"> No. </th>
+                      <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="event">
+                      <th mat-header-cell *matHeaderCellDef> Event </th>
+                      <td mat-cell *matCellDef="let element"> {{element.event}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="startDate">
+                      <th mat-header-cell *matHeaderCellDef> Start Date </th>
+                      <td mat-cell *matCellDef="let element"> {{element.startDate}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="location">
+                      <th mat-header-cell *matHeaderCellDef> Localtion </th>
+                      <td mat-cell *matCellDef="let element"> {{element.location}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                      <th mat-header-cell *matHeaderCellDef> Status </th>
+                      <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="actions">
+                      <th mat-header-cell *matHeaderCellDef style="width: 100px"> Actions </th>
+                      <td mat-cell *matCellDef="let element; let i = index;"> 
+                        <button mat-icon-button color="primary">
+                          <mat-icon>visibility</mat-icon>
+                        </button>
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="crf">
+                      <th mat-header-cell *matHeaderCellDef> CRFs (Name, Version, Status, Updated, Actions) </th>
+                      <td mat-cell *matCellDef="let element"> {{element.studySubjectId}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <tr class="mat-row" *matNoDataRow>
+                      <td class="mat-cell" colspan="21" style="text-align: center;">No Data</td>
+                    </tr>
+                </table>
+              </div>
+              <mat-paginator [length]="length"
+                            [pageSize]="pageSize"
+                            [pageSizeOptions]="pageSizeOptions">
+              </mat-paginator>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Group
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Global Subject Record
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Subject Casebook
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </div>
+  </div>

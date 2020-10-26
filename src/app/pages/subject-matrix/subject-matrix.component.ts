@@ -5,6 +5,8 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { DialogData, ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { ApiService } from '../../services/api.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-subject-matrix',
@@ -23,7 +25,11 @@ export class SubjectMatrixComponent implements OnInit, AfterViewChecked {
   tableHeight: number
   tableWidth: number
   isLoading: boolean
-  constructor(public dialog: MatDialog, private apiService: ApiService, private _snackBar: MatSnackBar) {}
+  constructor(
+    public dialog: MatDialog,
+    private apiService: ApiService,
+    private _snackBar: MatSnackBar,
+    private router: Router) {}
 
   ngAfterViewChecked(): void {
     this.tableHeight = this.table._elementRef.nativeElement.clientHeight + 9
@@ -87,6 +93,10 @@ export class SubjectMatrixComponent implements OnInit, AfterViewChecked {
       this.tableWidth = this.table._elementRef.nativeElement.clientWidth + 5
       this.isLoading = false
     })
+  }
+
+  details(data) {
+    this.router.navigate(['/view-subject', { id: data.studySubjectId }]);
   }
 }
 

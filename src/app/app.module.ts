@@ -28,6 +28,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -41,6 +42,7 @@ import { StudyProgressComponent } from './components/study-progress/study-progre
 import { SubjectCountComponent } from './components/subject-count/subject-count.component';
 import { StudyAuditLogComponent } from './pages/study-audit-log/study-audit-log.component';
 import { NotesDiscrepanciesComponent } from './pages/notes-discrepancies/notes-discrepancies.component';
+import { ViewSubjectComponent } from './pages/view-subject/view-subject.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,8 @@ import { NotesDiscrepanciesComponent } from './pages/notes-discrepancies/notes-d
     StudyProgressComponent,
     SubjectCountComponent,
     StudyAuditLogComponent,
-    NotesDiscrepanciesComponent
+    NotesDiscrepanciesComponent,
+    ViewSubjectComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +87,8 @@ import { NotesDiscrepanciesComponent } from './pages/notes-discrepancies/notes-d
     MatSelectModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatExpansionModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
