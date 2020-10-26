@@ -14,7 +14,7 @@ export class ViewSubjectComponent implements OnInit {
   length:number;
   pageSize: number;
   pageSizeOptions: number[] ;
-  subject: object = {
+  subject: any = {
     enrollmentDate: '',
     label: '',
     status: '',
