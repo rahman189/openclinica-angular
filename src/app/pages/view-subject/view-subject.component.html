@@ -17,7 +17,7 @@
             <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  Study Subject Record
+                  <h6>Study Subject Record</h6>
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <div class="row">
@@ -37,13 +37,13 @@
                   Secondary ID
                 </div>
                 <div class="col-2 value">
-                  -
+                  {{subject.secondaryLabel}}
                 </div>
                 <div class="col-2">
                   Date Of Birth
                 </div>
                 <div class="col-2 value">
-                  {{subject.dateOfBirth}}
+                  {{subject.dateOfBirth | date: 'dd-MMM-yyyy'}}
                 </div>
                 <div class="col-2">
                   OID
@@ -67,7 +67,7 @@
                   Enrollment Date
                 </div>
                 <div class="col-2 value">
-                  {{subject.enrollmentDate}}
+                  {{subject.enrollmentDate | date: 'dd-MMM-yyyy'}}
                 </div>
                 <div class="col-2">
                   Study Name
@@ -82,11 +82,17 @@
                   -
                 </div>
               </div>
+              <div class="row">
+                <div class="col-2 offset-10">
+                  <button mat-flat-button color="primary" class="button-full-width" (click)="editStudySubject()">Edit
+                  </button>
+                </div>
+              </div>
             </mat-expansion-panel>
             <mat-expansion-panel expanded>
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  Events
+                  <h6>Events</h6>
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <mat-form-field class="example-full-width">
@@ -116,7 +122,7 @@
                       <td mat-cell *matCellDef="let element"> {{element.status}} </td>
                     </ng-container>
                     <ng-container matColumnDef="actions">
-                      <th mat-header-cell *matHeaderCellDef> Actions </th>
+                      <th mat-header-cell *matHeaderCellDef style="width: 100px"> Actions </th>
                       <td mat-cell *matCellDef="let element; let i = index;"> 
                         <button mat-icon-button color="primary">
                           <mat-icon>visibility</mat-icon>
@@ -138,7 +144,7 @@
             <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  Group
+                  <h6>Group</h6>
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <div class="mat-elevation-z8">
@@ -170,14 +176,38 @@
             <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  Global Subject Record
+                  <h6>Global Subject Record</h6>
                 </mat-panel-title>
               </mat-expansion-panel-header>
+              <div class="row">
+                <div class="col-2">Person ID</div>
+                <div class="col-2 value">{{globalSubject.personId}}</div>
+                <div class="col-2">Date Record Created</div>
+                <div class="col-2 value">{{globalSubject.dateCreated | date:'dd-MMM-yyyy'}}</div>
+                <div class="col-2">Created By</div>
+                <div class="col-2 value">{{globalSubject.firstName + ' ' + globalSubject.lastName}}</div>
+                <div class="col-2">Date Record Last Update</div>
+                <div class="col-2 value">{{globalSubject.dateUpdated | date:'dd-MMM-yyyy'}}</div>
+                <div class="col-2">Update By</div>
+                <div class="col-2 value">-</div>
+                <div class="col-2">Status</div>
+                <div class="col-2 value">{{globalSubject.status}}</div>
+                <div class="col-2">Date of birth</div>
+                <div class="col-2 value">{{globalSubject.dateOfBirth | date: 'dd-MMM-yyyy'}}</div>
+                <div class="col-2">Sex</div>
+                <div class="col-2 value">{{globalSubject.gender === 'm' ? 'Male' : 'Female'}}</div>
+              </div>
+              <div class="row">
+                <div class="col-2 offset-10">
+                  <button mat-flat-button color="primary" class="button-full-width" (click)="addNewSubject()">Edit
+                  </button>
+                </div>
+              </div>
             </mat-expansion-panel>
             <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  Subject Casebook
+                  <h6>Subject Casebook</h6>
                 </mat-panel-title>
               </mat-expansion-panel-header>
             </mat-expansion-panel>

@@ -7,3 +7,24 @@ table {
 .example-full-width {
   width: 100%;
 }
+h6 {
+  margin: 0;
+}
+.col-2 {
+  margin-bottom: 10px;
+}
+.button-subject {
+  display: flex;
+  justify-content: flex-end;
+}
+.button-full-width {
+  width: 100%;
+}
+.mat-progress-bar {
+  position: relative;
+  top: -25px;
+  width: 500px;
+  left: -25px;
+  border-top-right-radius: 2px;
+  border-top-left-radius: 2px;
+}

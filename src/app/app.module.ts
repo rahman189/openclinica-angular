@@ -43,6 +43,8 @@ import { SubjectCountComponent } from './components/subject-count/subject-count.
 import { StudyAuditLogComponent } from './pages/study-audit-log/study-audit-log.component';
 import { NotesDiscrepanciesComponent } from './pages/notes-discrepancies/notes-discrepancies.component';
 import { ViewSubjectComponent } from './pages/view-subject/view-subject.component';
+import { DialogEditSubject } from './pages/view-subject/view-subject.component';
+import { DialogEditStudySubject } from './pages/view-subject/view-subject.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { ViewSubjectComponent } from './pages/view-subject/view-subject.componen
     SubjectCountComponent,
     StudyAuditLogComponent,
     NotesDiscrepanciesComponent,
-    ViewSubjectComponent
+    ViewSubjectComponent,
+    DialogEditSubject,
+    DialogEditStudySubject
   ],
   imports: [
     BrowserModule,

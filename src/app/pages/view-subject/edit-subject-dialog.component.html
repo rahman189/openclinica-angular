@@ -1,0 +1,35 @@
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+<h1 mat-dialog-title>
+  Edit Subject
+</h1>
+<div mat-dialog-content>
+  <form class="example-form" [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
+    <mat-form-field class="example-full-width">
+      <mat-label>Person ID</mat-label>
+      <input matInput placeholder="Person ID" formControlName="personId">
+      <mat-error *ngIf="checkErrors('personId', 'required')">Person ID is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Sex</mat-label>
+      <mat-select formControlName="sex">
+        <mat-option value="m">Male</mat-option>
+        <mat-option value="f">Female</mat-option>
+      </mat-select>
+      <mat-error *ngIf="checkErrors('sex', 'required')">Sex is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Date of Birth</mat-label>
+      <input matInput [matDatepicker]="pickerBirth" formControlName="dateOfBirth">
+      <mat-datepicker-toggle matSuffix [for]="pickerBirth"></mat-datepicker-toggle>
+      <mat-datepicker #pickerBirth></mat-datepicker>
+      <mat-error *ngIf="checkErrors('dateOfBirth', 'required')">Date of Birth is required</mat-error>
+    </mat-form-field>
+    
+  </form>
+</div>
+<div mat-dialog-actions style="float: right;">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onSubmit()" [disabled]="loading">Update</button>
+</div>

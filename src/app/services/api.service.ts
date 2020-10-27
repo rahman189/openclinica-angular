@@ -32,5 +32,12 @@ export class ApiService {
         return response
       }));
   }
+  put(url: string, data: object) {
+		return this.http.put<any>(`${environment.apiUrl}${url}`, data)
+		.pipe(
+			map(response => {
+        return response
+      }));
+  }
   
 }

@@ -96,7 +96,7 @@ export class SubjectMatrixComponent implements OnInit, AfterViewChecked {
   }
 
   details(data) {
-    this.router.navigate(['/view-subject', { id: data.studySubjectId }]);
+    this.router.navigate(['/view-subject', { id: data.studySubjectId, subjectId: data.subjectId }]);
   }
 }
 
