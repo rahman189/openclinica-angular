@@ -1,0 +1,66 @@
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+<h1 mat-dialog-title *ngIf="studyEventForm.get('studyEventDefinitionId').value; else headerUpdate">
+  Update Study Event Definition
+</h1>
+<ng-template #headerUpdate>
+  <h1 mat-dialog-title>
+    Add Study Event Definition
+  </h1>
+</ng-template>
+
+<div mat-dialog-content>
+  <form class="example-form" [formGroup]="studyEventForm" (ngSubmit)="onSubmit()">
+    <mat-form-field class="example-full-width">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Name" formControlName="name">
+      <mat-error *ngIf="checkErrors('name', 'required')">Name is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Type</mat-label>
+      <input matInput placeholder="Type" formControlName="type">
+      <mat-error *ngIf="checkErrors('type', 'required')">Type is required</mat-error>
+    </mat-form-field>
+    
+    <mat-form-field class="example-full-width">
+      <mat-label>Category</mat-label>
+      <input matInput placeholder="Category" formControlName="category">
+      <mat-error *ngIf="checkErrors('category', 'required')">Category is required</mat-error>
+    </mat-form-field>
+    
+    <mat-form-field class="example-full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput placeholder="Description" formControlName="description"></textarea>
+      <mat-error *ngIf="checkErrors('description', 'required')">Description is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="statusId">
+        <mat-option *ngFor="let item of statusList" [value]="item.value">{{item.label}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="checkErrors('statusId', 'required')">Status is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Study</mat-label>
+      <mat-select formControlName="studyId">
+        <mat-option *ngFor="let item of studyList" [value]="item.value">{{item.label}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="checkErrors('studyId', 'required')">Study is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>OID</mat-label>
+      <input matInput placeholder="OID" formControlName="oid">
+      <mat-error *ngIf="checkErrors('oid', 'required')">OID is required</mat-error>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="repeating">Repeating</mat-checkbox>
+  </form>
+</div>
+<div mat-dialog-actions style="float: right;">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button *ngIf="studyEventForm.get('studyEventDefinitionId').value; else buttonCreate" (click)="onSubmit()" [disabled]="loading">Update</button>
+  <ng-template #buttonCreate><button mat-button  (click)="onSubmit()" [disabled]="loading">Add</button></ng-template>
+</div>

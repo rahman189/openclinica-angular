@@ -9,6 +9,7 @@ import { AuthGuard } from './helpers/auth.guard';
 import { StudyAuditLogComponent } from './pages/study-audit-log/study-audit-log.component';
 import { NotesDiscrepanciesComponent } from './pages/notes-discrepancies/notes-discrepancies.component';
 import { ViewSubjectComponent } from './pages/view-subject/view-subject.component';
+import { StudyEventDefinitionComponent } from './pages/study-event-definition/study-event-definition.component';
 const routes: Routes = [
   {
     path: '',
@@ -18,7 +19,8 @@ const routes: Routes = [
       {path: 'subject-matrix', component: SubjectMatrixComponent, canActivate: [AuthGuard]},
       {path: 'study-audit-log', component: StudyAuditLogComponent, canActivate: [AuthGuard]},
       {path: 'notes-discrepancies', component: NotesDiscrepanciesComponent, canActivate: [AuthGuard]},
-      {path: 'view-subject', component: ViewSubjectComponent, canActivate: [AuthGuard]}
+      {path: 'view-subject', component: ViewSubjectComponent, canActivate: [AuthGuard]},
+      {path: 'study-event-definition', component: StudyEventDefinitionComponent, canActivate: [AuthGuard]}
     ],
     canActivate: [AuthGuard]
   },

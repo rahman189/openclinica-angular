@@ -29,6 +29,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -45,6 +46,8 @@ import { NotesDiscrepanciesComponent } from './pages/notes-discrepancies/notes-d
 import { ViewSubjectComponent } from './pages/view-subject/view-subject.component';
 import { DialogEditSubject } from './pages/view-subject/view-subject.component';
 import { DialogEditStudySubject } from './pages/view-subject/view-subject.component';
+import { StudyEventDefinitionComponent } from './pages/study-event-definition/study-event-definition.component';
+import { StudyEventDefinitionDialog } from './pages/study-event-definition/study-event-definition.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +70,9 @@ import { DialogEditStudySubject } from './pages/view-subject/view-subject.compon
     NotesDiscrepanciesComponent,
     ViewSubjectComponent,
     DialogEditSubject,
-    DialogEditStudySubject
+    DialogEditStudySubject,
+    StudyEventDefinitionComponent,
+    StudyEventDefinitionDialog
   ],
   imports: [
     BrowserModule,
@@ -92,7 +97,8 @@ import { DialogEditStudySubject } from './pages/view-subject/view-subject.compon
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatCheckboxModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
