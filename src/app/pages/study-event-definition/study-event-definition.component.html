@@ -36,7 +36,14 @@
                   </ng-container>
                   <ng-container matColumnDef="repeating">
                     <th mat-header-cell *matHeaderCellDef> Repeating </th>
-                    <td mat-cell *matCellDef="let element"> {{element.repeating}} </td>
+                    <td mat-cell *matCellDef="let element">
+                      <span *ngIf="element.repeating; else noRepeating">
+                        Yes
+                      </span>
+                      <ng-template #noRepeating>
+                        <span>No</span>
+                      </ng-template>
+                    </td>
                   </ng-container>
                   <ng-container matColumnDef="type">
                     <th mat-header-cell *matHeaderCellDef> Type </th>

@@ -5,6 +5,7 @@ import { ApiService } from '../../services/api.service'
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-view-subject',
@@ -45,6 +46,7 @@ export class ViewSubjectComponent implements OnInit {
   }
   studySubjectId: any;
   subjectId: any;
+  search: string = ''
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
@@ -54,16 +56,20 @@ export class ViewSubjectComponent implements OnInit {
   ngOnInit(): void {
     this.studySubjectId = this.route.snapshot.paramMap.get('id')
     this.subjectId = this.route.snapshot.paramMap.get('subjectId')
-    this.apiService.get(`/subject/details/${this.studySubjectId}`).subscribe((data) => {
-      this.subject = data
-    })
-    this.apiService.get(`/subject/details-subject/${this.subjectId}`).subscribe((dataSubject) => {
-      this.globalSubject = dataSubject
+    forkJoin([
+      this.apiService.get(`/subject/details/${this.studySubjectId}`),
+      this.apiService.get(`/subject/details-subject/${this.subjectId}`),
+      this.apiService.get(`/study-event/get-all/${this.studySubjectId}?search=`)
+    ]).subscribe(result => {
+      const [subject, globalSubject, dataSource] = result
+      this.subject = subject
+      this.globalSubject = globalSubject
+      this.dataSource = dataSource
     })
     this.displayedColumns = [
       'index',
-      'event',
-      'startDate',
+      'studyEventDefinition',
+      'dateStart',
       'location',
       'status',
       'actions',
@@ -105,6 +111,12 @@ export class ViewSubjectComponent implements OnInit {
         })
       }
     });
+  }
+
+  searchStudyEvent(): void {
+    this.apiService.get(`/study-event/get-all/${this.studySubjectId}?search=${this.search}`).subscribe(response => {
+      this.dataSource = response
+    })
   }
 }
 
