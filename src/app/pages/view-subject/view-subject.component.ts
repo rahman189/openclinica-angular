@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, TemplateRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service'
@@ -17,6 +17,7 @@ export class ViewSubjectComponent implements OnInit {
   dataSource: any[];
   dataSourceGroup: any[];
   displayedColumnsGroup: string[];
+  displayedStudyEventColumns: string[];
   subject: any = {
     enrollmentDate: '',
     label: '',
@@ -44,13 +45,21 @@ export class ViewSubjectComponent implements OnInit {
     statusId: '',
     subjectId: ''
   }
+  pipe = new DatePipe('en-US')
   studySubjectId: any;
   subjectId: any;
   search: string = ''
+  lisStudyEventDefinition: any[]
+  formStudyEvent: any
+  arrayFormStudyEvent: any[]
+  loading: boolean
+  openedDialog: any
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private fb: FormBuilder,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -59,12 +68,14 @@ export class ViewSubjectComponent implements OnInit {
     forkJoin([
       this.apiService.get(`/subject/details/${this.studySubjectId}`),
       this.apiService.get(`/subject/details-subject/${this.subjectId}`),
-      this.apiService.get(`/study-event/get-all/${this.studySubjectId}?search=`)
+      this.apiService.get(`/study-event/get-all/${this.studySubjectId}?search=`),
+      this.apiService.get(`/study-event-controller/get-list-study-event-definition`)
     ]).subscribe(result => {
-      const [subject, globalSubject, dataSource] = result
+      const [subject, globalSubject, dataSource, lisStudyEventDefinition] = result
       this.subject = subject
       this.globalSubject = globalSubject
       this.dataSource = dataSource
+      this.lisStudyEventDefinition = lisStudyEventDefinition
     })
     this.displayedColumns = [
       'index',
@@ -82,6 +93,24 @@ export class ViewSubjectComponent implements OnInit {
       'studyGroup',
       'notes'];
     this.dataSourceGroup = [];
+    this.displayedStudyEventColumns = [
+      'index',
+      'studyEventDefinitionId',
+      'startDate',
+      'endDate',
+      'actions'
+    ]
+    this.arrayFormStudyEvent = []
+    this.formStudyEvent = this.fb.group({
+      studySubjecyId: [''],
+      studyEventDefinitionId: ['', Validators.required],
+      startDate: [this.pipe.transform(new Date(), 'yyyy-MM-ddT00:00'), Validators.required],
+      endDate: ['', Validators.required]
+    });
+  }
+
+  getValue(form: string, control: string) {
+    return this[form].get(control).value
   }
 
   addNewSubject(): void {
@@ -118,12 +147,99 @@ export class ViewSubjectComponent implements OnInit {
       this.dataSource = response
     })
   }
+  validateAllFormFields(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      }
+    });
+  }
+
+  checkErrors(form:string, controlName: string, validator: string) {
+    return this[form].controls[controlName].hasError(validator);
+  }
+  openDialogAddStudyEvent(templateRef: TemplateRef<any>) {
+    this.openedDialog = this.dialog.open(templateRef, {
+      width: '800px'
+    });
+  }
+  saveStudyEvent(): void {
+    if (!this.formStudyEvent.invalid) {
+      let data = [...this.arrayFormStudyEvent]
+      data.push(this.formStudyEvent.value)
+      this.arrayFormStudyEvent = data
+      this.formStudyEvent.reset()
+    }
+    else this.validateAllFormFields(this.formStudyEvent)
+  }
+  deleteListStudyEvent(index) {
+    let data = [...this.arrayFormStudyEvent]
+    data.splice(index, 1)
+    this.arrayFormStudyEvent = data
+  }
+  createStudyEvent(): void {
+    if (!this.arrayFormStudyEvent.length) {
+      this._snackBar.open('Study event not be empty', '', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['error-snackbar']
+      });
+    } else {
+      const data = this.arrayFormStudyEvent.map(item => ({
+        studyEventDefinitionId: item.studyEventDefinitionId.value,
+        startDate: this.pipe.transform(new Date(item.startDate), 'yyyy-MM-dd HH:mm:ss'),
+        endDate: this.pipe.transform(new Date(item.endDate), 'yyyy-MM-dd HH:mm:ss')
+      }))
+      const objectToSave = {
+        subjectId: this.subjectId,
+        data: data
+      }
+      this.loading = true
+      this.apiService.post('/subject/save-study-event', objectToSave).subscribe({
+        next: () => {
+          this.loading = false
+          this.openedDialog.close()
+          this._snackBar.open('Success save data', '', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['success-snackbar']
+          });
+          this.searchStudyEvent()
+        },
+        error: error => {
+          this._snackBar.open(error, '', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['error-snackbar']
+          });
+          this.loading = false
+        }
+      })
+    }
+  }
 }
 
 @Component({
   selector: 'edit-subject-dialog',
   templateUrl: 'edit-subject-dialog.component.html',
-  styleUrls: ['./view-subject.component.scss']
+  styles: [
+    `
+      .mat-progress-bar {
+        position: relative;
+        top: -25px;
+        width: 500px;
+        left: -25px;
+        border-top-right-radius: 2px;
+        border-top-left-radius: 2px;
+      }
+    `
+  ]
 })
 export class DialogEditSubject {
   subjectForm = this.fb.group({

@@ -11,6 +11,7 @@ import { SubjectMatrixComponent } from './pages/subject-matrix/subject-matrix.co
 import { DialogOverviewExampleDialog } from './pages/subject-matrix/subject-matrix.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MomentModule, DateFormatPipe } from 'ngx-moment';
 
 import { JwtInterceptor, ErrorInterceptor } from './helpers';
 
@@ -48,6 +49,7 @@ import { DialogEditSubject } from './pages/view-subject/view-subject.component';
 import { DialogEditStudySubject } from './pages/view-subject/view-subject.component';
 import { StudyEventDefinitionComponent } from './pages/study-event-definition/study-event-definition.component';
 import { StudyEventDefinitionDialog } from './pages/study-event-definition/study-event-definition.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +74,8 @@ import { StudyEventDefinitionDialog } from './pages/study-event-definition/study
     DialogEditSubject,
     DialogEditStudySubject,
     StudyEventDefinitionComponent,
-    StudyEventDefinitionDialog
+    StudyEventDefinitionDialog,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -98,11 +101,13 @@ import { StudyEventDefinitionDialog } from './pages/study-event-definition/study
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatExpansionModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MomentModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    DateFormatPipe
   ],
   bootstrap: [AppComponent]
 })
