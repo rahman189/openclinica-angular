@@ -54,6 +54,7 @@ export class ViewSubjectComponent implements OnInit {
   arrayFormStudyEvent: any[]
   loading: boolean
   openedDialog: any
+  listSubjectEventStatus: any[]
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
@@ -69,20 +70,23 @@ export class ViewSubjectComponent implements OnInit {
       this.apiService.get(`/subject/details/${this.studySubjectId}`),
       this.apiService.get(`/subject/details-subject/${this.subjectId}`),
       this.apiService.get(`/study-event/get-all/${this.studySubjectId}?search=`),
-      this.apiService.get(`/study-event-controller/get-list-study-event-definition`)
+      this.apiService.get(`/study-event-controller/get-list-study-event-definition`),
+      this.apiService.get('/study-event/get-list-subject-event-status')
     ]).subscribe(result => {
-      const [subject, globalSubject, dataSource, lisStudyEventDefinition] = result
+      const [subject, globalSubject, dataSource, lisStudyEventDefinition, listSubjectEventStatus] = result
       this.subject = subject
       this.globalSubject = globalSubject
       this.dataSource = dataSource
       this.lisStudyEventDefinition = lisStudyEventDefinition
+      this.listSubjectEventStatus = listSubjectEventStatus
     })
     this.displayedColumns = [
       'index',
       'studyEventDefinition',
       'dateStart',
+      'dateEnd',
       'location',
-      'status',
+      'subjectEventStatus',
       'actions',
       'crf'];
     this.dataSource = [];
@@ -102,10 +106,12 @@ export class ViewSubjectComponent implements OnInit {
     ]
     this.arrayFormStudyEvent = []
     this.formStudyEvent = this.fb.group({
+      studyEventId: [''],
       studySubjecyId: [''],
       studyEventDefinitionId: ['', Validators.required],
       startDate: [this.pipe.transform(new Date(), 'yyyy-MM-ddT00:00'), Validators.required],
-      endDate: ['', Validators.required]
+      endDate: ['', Validators.required],
+      subjectEventStatusId: [1, Validators.required]
     });
   }
 
@@ -210,6 +216,7 @@ export class ViewSubjectComponent implements OnInit {
             panelClass: ['success-snackbar']
           });
           this.searchStudyEvent()
+          this.arrayFormStudyEvent = []
         },
         error: error => {
           this._snackBar.open(error, '', {
@@ -222,6 +229,59 @@ export class ViewSubjectComponent implements OnInit {
         }
       })
     }
+  }
+  openDialogShowDetail(templateRef: TemplateRef<any>, idStudyEvent: any) {
+    this.apiService.get(`/study-event/get-detail/${idStudyEvent}`).subscribe((data) => {
+      this.openedDialog = this.dialog.open(templateRef, {
+        width: '500px',
+        data: data
+      });
+    })
+  }
+  openDialogEditStudyEvent(templateRef: TemplateRef<any>, idStudyEvent: any) {
+    this.apiService.get(`/study-event/get-detail/${idStudyEvent}`).subscribe((data) => {
+      this.formStudyEvent.patchValue({
+        studyEventId: idStudyEvent,
+        studySubjecyId: data.studySubjectId,
+        studyEventDefinitionId: {value: data.studyEventDefinitionId, disabled: true},
+        startDate: this.pipe.transform(new Date(data.dateStart), 'yyyy-MM-ddTHH:mm'),
+        endDate: this.pipe.transform(new Date(data.dateEnd), 'yyyy-MM-ddTHH:mm'),
+        subjectEventStatusId: data.subjectEventStatusId
+      })
+      this.openedDialog = this.dialog.open(templateRef, {
+        width: '500px',
+      });
+    })
+  }
+  updateStudyEvent(): void {
+    const saveForm = {
+      startDate: this.pipe.transform(new Date(this.formStudyEvent.get('startDate').value), 'yyyy-MM-dd HH:mm:ss'),
+      endDate: this.pipe.transform(new Date(this.formStudyEvent.get('endDate').value), 'yyyy-MM-dd HH:mm:ss'),
+      subjectEventStatusId: this.formStudyEvent.get('subjectEventStatusId').value,
+      studyEventId: this.formStudyEvent.get('studyEventId').value
+    }
+    this.apiService.put('/study-event/update-study-event', saveForm).subscribe({
+      next: () => {
+        this.loading = false
+        this.openedDialog.close()
+        this._snackBar.open('Success update data', '', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          panelClass: ['success-snackbar']
+        });
+        this.searchStudyEvent()
+        this.formStudyEvent.reset()
+      },
+      error: error => {
+        this._snackBar.open(error, '', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          panelClass: ['error-snackbar']
+        });
+      }
+    })
   }
 }
 
