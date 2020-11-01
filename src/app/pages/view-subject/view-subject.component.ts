@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service'
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DialogData, ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
 
@@ -243,11 +244,12 @@ export class ViewSubjectComponent implements OnInit {
       this.formStudyEvent.patchValue({
         studyEventId: idStudyEvent,
         studySubjecyId: data.studySubjectId,
-        studyEventDefinitionId: {value: data.studyEventDefinitionId, disabled: true},
+        studyEventDefinitionId: data.studyEventDefinitionId,
         startDate: this.pipe.transform(new Date(data.dateStart), 'yyyy-MM-ddTHH:mm'),
         endDate: this.pipe.transform(new Date(data.dateEnd), 'yyyy-MM-ddTHH:mm'),
         subjectEventStatusId: data.subjectEventStatusId
       })
+      this.formStudyEvent.controls['studyEventDefinitionId'].disable();
       this.openedDialog = this.dialog.open(templateRef, {
         width: '500px',
       });
@@ -282,6 +284,93 @@ export class ViewSubjectComponent implements OnInit {
         });
       }
     })
+  }
+  removeStudyEvent(studyEventId: any): void {
+    const data:DialogData = {
+      message: 'Are you sure to remove this study event?',
+      title: 'Confirmation'
+    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '500px',
+      data: data,
+      role: 'alertdialog'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.apiService.put(`/study-event/remove-study-event`, { studyEventId }).subscribe({
+          next: () => {
+            this.searchStudyEvent()
+          },
+          error: error => {
+            this._snackBar.open(error, '', {
+              duration: 3000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
+              panelClass: ['error-snackbar']
+            });
+          }
+        })
+      }
+    });
+  }
+  restoreStudyEvent(studyEventId: any): void {
+    const data:DialogData = {
+      message: 'Are you sure to restore this study event?',
+      title: 'Confirmation'
+    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '500px',
+      data: data,
+      role: 'alertdialog'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.apiService.put(`/study-event/restore-study-event`, { studyEventId }).subscribe({
+          next: () => {
+            this.searchStudyEvent()
+          },
+          error: error => {
+            this._snackBar.open(error, '', {
+              duration: 3000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
+              panelClass: ['error-snackbar']
+            });
+          }
+        })
+      }
+    });
+  }
+  deleteStudyEvent(studyEventId: any): void {
+    const data:DialogData = {
+      message: 'Are you sure to delete this study event?',
+      title: 'Confirmation'
+    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '500px',
+      data: data,
+      role: 'alertdialog'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.apiService.delete(`/study-event/delete-study-event/${ studyEventId }`).subscribe({
+          next: () => {
+            this.searchStudyEvent()
+          },
+          error: error => {
+            this._snackBar.open(error, '', {
+              duration: 3000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
+              panelClass: ['error-snackbar']
+            });
+          }
+        })
+      }
+    });
   }
 }
 

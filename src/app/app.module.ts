@@ -49,7 +49,6 @@ import { DialogEditSubject } from './pages/view-subject/view-subject.component';
 import { DialogEditStudySubject } from './pages/view-subject/view-subject.component';
 import { StudyEventDefinitionComponent } from './pages/study-event-definition/study-event-definition.component';
 import { StudyEventDefinitionDialog } from './pages/study-event-definition/study-event-definition.component';
-import { DialogComponent } from './components/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -74,8 +73,7 @@ import { DialogComponent } from './components/dialog/dialog.component';
     DialogEditSubject,
     DialogEditStudySubject,
     StudyEventDefinitionComponent,
-    StudyEventDefinitionDialog,
-    DialogComponent
+    StudyEventDefinitionDialog
   ],
   imports: [
     BrowserModule,
