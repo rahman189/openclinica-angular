@@ -61,10 +61,7 @@ export class ViewSubjectComponent implements OnInit {
   openedDialog: any
   listSubjectEventStatus: any[]
   @ViewChild('myTable') table;
-  loadingTableStyle: loadingTableStyle = {
-    height: 'auto',
-    width: 'auto'
-  }
+  loadingTableStyle: loadingTableStyle
   isLoading: boolean
   constructor(
     public dialog: MatDialog,
@@ -77,7 +74,6 @@ export class ViewSubjectComponent implements OnInit {
   ngOnInit(): void {
     this.studySubjectId = this.route.snapshot.paramMap.get('id')
     this.subjectId = this.route.snapshot.paramMap.get('subjectId')
-    this.isLoading = true
     forkJoin([
       this.apiService.get(`/subject/details/${this.studySubjectId}`),
       this.apiService.get(`/subject/details-subject/${this.subjectId}`),
@@ -91,7 +87,10 @@ export class ViewSubjectComponent implements OnInit {
       this.dataSource = dataSource
       this.lisStudyEventDefinition = lisStudyEventDefinition
       this.listSubjectEventStatus = listSubjectEventStatus
-      this.isLoading = false
+      this.loadingTableStyle = {
+        height: this.table._elementRef.nativeElement.clientHeight + 9+'px',
+        width: this.table._elementRef.nativeElement.clientWidth +'px'
+      }
     })
     this.displayedColumns = [
       'index',
@@ -122,7 +121,7 @@ export class ViewSubjectComponent implements OnInit {
       studyEventId: [''],
       studySubjecyId: [''],
       studyEventDefinitionId: ['', Validators.required],
-      startDate: [this.pipe.transform(new Date(), 'yyyy-MM-ddT00:00'), Validators.required],
+      startDate: [this.pipe.transform(new Date(), 'yyyy-MM-ddTHH:mm'), Validators.required],
       endDate: ['', Validators.required],
       subjectEventStatusId: [1, Validators.required]
     });
@@ -161,13 +160,15 @@ export class ViewSubjectComponent implements OnInit {
     });
   }
 
-  searchStudyEvent(): void {
+  searchStudyEvent() {
     this.isLoading = true
     this.apiService.get(`/study-event/get-all/${this.studySubjectId}?search=${this.search}`).subscribe(response => {
       this.dataSource = response
-      this.loadingTableStyle.height = this.table._elementRef.nativeElement.clientHeight + 9
-      this.loadingTableStyle.width = this.table._elementRef.nativeElement.clientWidth
       this.isLoading = false
+      this.loadingTableStyle = {
+        height: this.table._elementRef.nativeElement.clientHeight + 9+'px',
+        width: this.table._elementRef.nativeElement.clientWidth +'px'
+      }
     })
   }
   validateAllFormFields(formGroup: FormGroup) {
@@ -194,7 +195,12 @@ export class ViewSubjectComponent implements OnInit {
       let data = [...this.arrayFormStudyEvent]
       data.push(this.formStudyEvent.value)
       this.arrayFormStudyEvent = data
-      this.formStudyEvent.reset()
+      this.formStudyEvent.reset({
+        studyEventDefinitionId: '',
+        startDate: this.pipe.transform(new Date(), 'yyyy-MM-ddTHH:mm'),
+        endDate: '',
+        subjectEventStatusId: 1
+      })
     }
     else this.validateAllFormFields(this.formStudyEvent)
   }

@@ -260,7 +260,7 @@
                 <input matInput placeholder="Event" [(ngModel)]="search" (keyup.enter)="searchStudyEvent()" #input>
               </mat-form-field>
               <div class="mat-elevation-z8">
-                <div class="spinner-container" *ngIf="isLoading" [style]="loadingTableStyle">
+                <div class="spinner-container" *ngIf="isLoading" [ngStyle]="loadingTableStyle">
                   <mat-spinner [diameter]="50"></mat-spinner>
                 </div>
                 <table mat-table #myTable [dataSource]="dataSource">

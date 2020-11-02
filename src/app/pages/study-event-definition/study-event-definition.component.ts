@@ -102,8 +102,8 @@ export class StudyEventDefinitionComponent implements OnInit, AfterViewChecked {
     this.isLoading = true
     this.apiService.get(`/study-event-controller/get-all/?search=${this.search}`).subscribe((data) => {
       this.dataSource = data
-      this.loadingTableStyle.height = this.table._elementRef.nativeElement.clientHeight + 9
-      this.loadingTableStyle.width = this.table._elementRef.nativeElement.clientWidth
+      this.loadingTableStyle.height = this.table._elementRef.nativeElement.clientHeight + 9 + 'px' 
+      this.loadingTableStyle.width = this.table._elementRef.nativeElement.clientWidth + 'px'
       this.isLoading = false
     })
   }

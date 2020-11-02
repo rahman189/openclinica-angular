@@ -96,8 +96,8 @@ export class SubjectMatrixComponent implements OnInit, AfterViewChecked {
     this.apiService.get(`/subject/get-all/?search=${this.search}`).subscribe((data) => {
       this.dataSource = data
       this.isLoading = false
-      this.loadingTableStyle.height = this.table._elementRef.nativeElement.clientHeight + 9
-      this.loadingTableStyle.width = this.table._elementRef.nativeElement.clientWidth
+      this.loadingTableStyle.height = this.table._elementRef.nativeElement.clientHeight + 9 + 'px'
+      this.loadingTableStyle.width = this.table._elementRef.nativeElement.clientWidth + 'px'
     })
   }
 
