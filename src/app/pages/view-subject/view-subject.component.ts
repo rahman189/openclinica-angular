@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, TemplateRef } from '@angular/core';
+import { Component, OnInit, Inject, TemplateRef, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service'
@@ -8,6 +8,10 @@ import { DialogData, ConfirmDialogComponent } from '../../components/confirm-dia
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
 
+interface loadingTableStyle {
+  height: string,
+  width: string
+}
 @Component({
   selector: 'app-view-subject',
   templateUrl: './view-subject.component.html',
@@ -56,6 +60,12 @@ export class ViewSubjectComponent implements OnInit {
   loading: boolean
   openedDialog: any
   listSubjectEventStatus: any[]
+  @ViewChild('myTable') table;
+  loadingTableStyle: loadingTableStyle = {
+    height: 'auto',
+    width: 'auto'
+  }
+  isLoading: boolean
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
@@ -67,6 +77,7 @@ export class ViewSubjectComponent implements OnInit {
   ngOnInit(): void {
     this.studySubjectId = this.route.snapshot.paramMap.get('id')
     this.subjectId = this.route.snapshot.paramMap.get('subjectId')
+    this.isLoading = true
     forkJoin([
       this.apiService.get(`/subject/details/${this.studySubjectId}`),
       this.apiService.get(`/subject/details-subject/${this.subjectId}`),
@@ -80,6 +91,7 @@ export class ViewSubjectComponent implements OnInit {
       this.dataSource = dataSource
       this.lisStudyEventDefinition = lisStudyEventDefinition
       this.listSubjectEventStatus = listSubjectEventStatus
+      this.isLoading = false
     })
     this.displayedColumns = [
       'index',
@@ -150,8 +162,12 @@ export class ViewSubjectComponent implements OnInit {
   }
 
   searchStudyEvent(): void {
+    this.isLoading = true
     this.apiService.get(`/study-event/get-all/${this.studySubjectId}?search=${this.search}`).subscribe(response => {
       this.dataSource = response
+      this.loadingTableStyle.height = this.table._elementRef.nativeElement.clientHeight + 9
+      this.loadingTableStyle.width = this.table._elementRef.nativeElement.clientWidth
+      this.isLoading = false
     })
   }
   validateAllFormFields(formGroup: FormGroup) {

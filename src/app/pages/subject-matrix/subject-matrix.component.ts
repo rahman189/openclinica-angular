@@ -7,7 +7,10 @@ import { ApiService } from '../../services/api.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
-
+interface loadingTableStyle {
+  height: string,
+  width: string
+}
 @Component({
   selector: 'app-subject-matrix',
   templateUrl: './subject-matrix.component.html',
@@ -24,6 +27,7 @@ export class SubjectMatrixComponent implements OnInit, AfterViewChecked {
   @ViewChild('myTable') table;
   tableHeight: number
   tableWidth: number
+  loadingTableStyle: loadingTableStyle
   isLoading: boolean
   constructor(
     public dialog: MatDialog,
@@ -32,8 +36,10 @@ export class SubjectMatrixComponent implements OnInit, AfterViewChecked {
     private router: Router) {}
 
   ngAfterViewChecked(): void {
-    this.tableHeight = this.table._elementRef.nativeElement.clientHeight + 9
-    this.tableWidth = this.table._elementRef.nativeElement.clientWidth + 5
+    this.loadingTableStyle = {
+      height: this.table._elementRef.nativeElement.clientHeight + 9+'px',
+      width: this.table._elementRef.nativeElement.clientWidth +'px'
+    }
   }
 
   ngOnInit(): void {
@@ -89,9 +95,9 @@ export class SubjectMatrixComponent implements OnInit, AfterViewChecked {
     this.isLoading = true
     this.apiService.get(`/subject/get-all/?search=${this.search}`).subscribe((data) => {
       this.dataSource = data
-      this.tableHeight = this.table._elementRef.nativeElement.clientHeight + 9
-      this.tableWidth = this.table._elementRef.nativeElement.clientWidth + 5
       this.isLoading = false
+      this.loadingTableStyle.height = this.table._elementRef.nativeElement.clientHeight + 9
+      this.loadingTableStyle.width = this.table._elementRef.nativeElement.clientWidth
     })
   }
 

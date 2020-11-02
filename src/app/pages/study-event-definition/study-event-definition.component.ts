@@ -6,6 +6,10 @@ import { ApiService } from '../../services/api.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
 
+interface loadingTableStyle {
+  height: string,
+  width: string
+}
 @Component({
   selector: 'app-study-event-definition',
   templateUrl: './study-event-definition.component.html',
@@ -19,8 +23,7 @@ export class StudyEventDefinitionComponent implements OnInit, AfterViewChecked {
   pageSizeOptions: number[] = [5, 10, 25, 100];
   search: string = ''
   @ViewChild('myTable') table;
-  tableHeight: number
-  tableWidth: number
+  loadingTableStyle: loadingTableStyle
   isLoading: boolean
   constructor(
     public dialog: MatDialog,
@@ -28,8 +31,10 @@ export class StudyEventDefinitionComponent implements OnInit, AfterViewChecked {
     private _snackBar: MatSnackBar) {}
 
   ngAfterViewChecked(): void {
-    this.tableHeight = this.table._elementRef.nativeElement.clientHeight + 9
-    this.tableWidth = this.table._elementRef.nativeElement.clientWidth + 5
+    this.loadingTableStyle = {
+      height: this.table._elementRef.nativeElement.clientHeight + 9+'px',
+      width: this.table._elementRef.nativeElement.clientWidth +'px'
+    }
   }
 
   ngOnInit(): void {
@@ -97,8 +102,8 @@ export class StudyEventDefinitionComponent implements OnInit, AfterViewChecked {
     this.isLoading = true
     this.apiService.get(`/study-event-controller/get-all/?search=${this.search}`).subscribe((data) => {
       this.dataSource = data
-      this.tableHeight = this.table._elementRef.nativeElement.clientHeight + 9
-      this.tableWidth = this.table._elementRef.nativeElement.clientWidth + 5
+      this.loadingTableStyle.height = this.table._elementRef.nativeElement.clientHeight + 9
+      this.loadingTableStyle.width = this.table._elementRef.nativeElement.clientWidth
       this.isLoading = false
     })
   }

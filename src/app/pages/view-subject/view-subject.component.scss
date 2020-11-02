@@ -29,3 +29,12 @@ h6 {
   border-top-right-radius: 2px;
   border-top-left-radius: 2px;
 }
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background: rgb(194, 194, 194, 0.5);
+  z-index: 2;
+}

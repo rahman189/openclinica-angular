@@ -22,7 +22,7 @@
               <input matInput (keyup.enter)="applyFilter()" [(ngModel)]="search" placeholder="Ex. ium" #input>
             </mat-form-field>
             <div class="mat-elevation-z8">
-              <div class="spinner-container" *ngIf="isLoading" [style]="{height: tableHeight+'px', width: tableWidth+'px'}">
+              <div class="spinner-container" *ngIf="isLoading" [style]="loadingTableStyle">
                 <mat-spinner [diameter]="50"></mat-spinner>
               </div>
               <table #myTable mat-table [dataSource]="dataSource">
