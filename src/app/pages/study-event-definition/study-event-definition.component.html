@@ -65,6 +65,10 @@
                     <th mat-header-cell *matHeaderCellDef> Status </th>
                     <td mat-cell *matCellDef="let element"> {{element.status}} </td>
                   </ng-container>
+                  <ng-container matColumnDef="formUrl">
+                    <th mat-header-cell *matHeaderCellDef> Form Url </th>
+                    <td mat-cell *matCellDef="let element"> {{element.formUrl}} </td>
+                  </ng-container>
                   <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> Actions </th>
                     <td mat-cell *matCellDef="let element; let i = index;"> 

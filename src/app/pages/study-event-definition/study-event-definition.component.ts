@@ -16,7 +16,7 @@ interface loadingTableStyle {
   styleUrls: ['./study-event-definition.component.scss']
 })
 export class StudyEventDefinitionComponent implements OnInit, AfterViewChecked {
-  displayedColumns: string[] = ['index', 'name', 'repeating', 'type', 'category', 'description', 'study', 'status', 'actions'];
+  displayedColumns: string[] = ['index', 'name', 'repeating', 'type', 'category', 'description', 'study', 'status', 'formUrl', 'actions'];
   dataSource: any[] = [];
   length = 100;
   pageSize = 10;
@@ -125,7 +125,8 @@ export class StudyEventDefinitionDialog implements OnInit {
     category: ['', Validators.required],
     statusId: ['', Validators.required],
     studyId: ['', Validators.required],
-    oid: ['', Validators.required]
+    oid: ['', Validators.required],
+    formUrl: ['', Validators.required]
   });
   loading: boolean;
   statusList: any[];
@@ -151,7 +152,6 @@ export class StudyEventDefinitionDialog implements OnInit {
       this.studyList = studyList
     })
     if (this.data) {
-      console.log(this.data)
       this.studyEventForm.patchValue({
         studyEventDefinitionId: this.data.studyEventDefinitionId,
         name: this.data.name,
@@ -161,7 +161,8 @@ export class StudyEventDefinitionDialog implements OnInit {
         category: this.data.category,
         statusId: this.data.statusId,
         studyId: this.data.studyId,
-        oid: this.data.oid
+        oid: this.data.oid,
+        formUrl: this.data.formUrl
       })
     }
   }

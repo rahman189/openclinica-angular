@@ -56,6 +56,12 @@
       <mat-error *ngIf="checkErrors('oid', 'required')">OID is required</mat-error>
     </mat-form-field>
 
+    <mat-form-field class="example-full-width">
+      <mat-label>Form Url</mat-label>
+      <input matInput placeholder="Form Url" formControlName="formUrl">
+      <mat-error *ngIf="checkErrors('formUrl', 'required')">Form Url is required</mat-error>
+    </mat-form-field>
+
     <mat-checkbox formControlName="repeating">Repeating</mat-checkbox>
   </form>
 </div>

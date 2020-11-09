@@ -189,6 +189,7 @@ export class ViewSubjectComponent implements OnInit {
     this.openedDialog = this.dialog.open(templateRef, {
       width: '800px'
     });
+    this.formStudyEvent.controls['studyEventDefinitionId'].enable();
   }
   saveStudyEvent(): void {
     if (!this.formStudyEvent.invalid) {
@@ -295,6 +296,7 @@ export class ViewSubjectComponent implements OnInit {
           panelClass: ['success-snackbar']
         });
         this.searchStudyEvent()
+        this.formStudyEvent.controls['studyEventDefinitionId'].enable();
         this.formStudyEvent.reset()
       },
       error: error => {

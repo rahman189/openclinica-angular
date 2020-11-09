@@ -15,26 +15,10 @@
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item">
-          <a routerLink="/" class="nav-link">
+          <a routerLink="/home" class="nav-link">
             <i class="nav-icon fas fa-home"></i>
             <p>
               Home
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/subject-matrix" class="nav-link">
-            <i class="nav-icon fas fa-table"></i>
-            <p>
-              Subject Matrix
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/notes-discrepancies" class="nav-link">
-            <i class="nav-icon fas fa-sticky-note"></i>
-            <p>
-              Notes & Discrepancies 
             </p>
           </a>
         </li>
@@ -46,7 +30,7 @@
             </p>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item menu-open">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-database"></i>
             <p>
@@ -56,22 +40,22 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a routerLink="/subject-matrix" class="nav-link">
+              <a routerLink="/subject-matrix" class="nav-link" routerLinkActive="active">
                 <p>Subject Matrix</p>
               </a>
             </li>
             <li class="nav-item">
-              <a routerLink="/study-event-definition" class="nav-link">
+              <a routerLink="/study-event-definition" class="nav-link" routerLinkActive="active">
                 <p>Study Event Definition</p>
               </a>
             </li>
             <li class="nav-item">
-              <a routerLink="/add-subject" class="nav-link">
+              <a routerLink="/add-subject" class="nav-link" routerLinkActive="active">
                 <p>Add Subject</p>
               </a>
             </li>
             <li class="nav-item">
-              <a routerLink="/notes-discrepancies" class="nav-link">
+              <a routerLink="/notes-discrepancies" class="nav-link" routerLinkActive="active">
                 <p>Notes & Discrepancies</p>
               </a>
             </li>
