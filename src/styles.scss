@@ -33,11 +33,11 @@ button:focus {
   color: white;
 }
 .layout-navbar-fixed .wrapper .main-header {
-  z-index: 1 !important;
+  z-index: 0 !important;
 }
 .main-sidebar {
   z-index: 1 !important;
 }
 .main-footer {
-  z-index: 1 !important;
+  z-index: 0 !important;
 }
